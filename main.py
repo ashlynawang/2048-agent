@@ -1,5 +1,7 @@
 import random
 import numpy as np 
+import multiprocessing
+import itertools
 
 
 def add_new_tile(grid):
@@ -52,10 +54,14 @@ def game_over(grid):
     return True
 
 
-def simulate_game():
+def init_grid():
     grid = np.zeros((4, 4))
     add_new_tile(grid)
     add_new_tile(grid)
+    return grid
+
+
+def simulate_game(grid):
     moves = [move_left, move_right, move_up, move_down]
 
     while not game_over(grid):
@@ -66,21 +72,69 @@ def simulate_game():
             grid = new_grid
             add_new_tile(grid)
     
-    return grid, max(max(row) for row in grid)
+    return np.max(grid)
 
 
-def run_simulations(num_games=100):
+def run_simulations(simulation, cycle=None, num_games=1000):
     results = []
     for _ in range(num_games):
-        _, max_tile = simulate_game()
+        grid = init_grid()
+        max_tile = simulation(grid) if not cycle else simulation(grid, cycle)
         results.append(max_tile)
     return results
 
 
+# Simulate a game with a specific move cycle
+def simulate_with_cycle(grid, cycle):
+    # grid = init_grid()
+    cycle_index = 0
+    while not game_over(grid):
+        move = cycle[cycle_index]
+        new_grid = move(grid)
+        if not np.array_equal(grid, new_grid):
+            grid = new_grid
+            add_new_tile(grid)
+        cycle_index = (cycle_index + 1) % len(cycle)  # Repeat the cycle
+    
+    return np.max(grid)
+
+
+def evaluate_all_cycles():
+    moves = [move_left, move_right, move_up, move_down]
+    move_names = ["left", "right", "up", "down"]
+    permutations = list(itertools.permutations(moves))
+    permutation_names = list(itertools.permutations(move_names))
+    
+    results = []
+    for i, cycle in enumerate(permutations):
+        cycle_results = run_simulations(simulate_with_cycle, cycle)
+        results.append((permutation_names[i], cycle_results))
+    
+    return results
+    # return sorted(results, key=lambda x: x[1], reverse=True)
+
+
 if __name__ == "__main__":
-    results = run_simulations()
+    results = run_simulations(simulate_game)
     print("Average Max Tile:", sum(results) / len(results))
     print("Tile Distribution:", {tile: results.count(tile) for tile in set(results)})
+
+    # max tile from playing out each permutation of moves LRUD
+    results = evaluate_all_cycles()
+    for cycle, score in results:
+        print(f"Cycle: {cycle}, Max Tile: {max(score)}, Average Max Tile: {sum(score)/len(score)}")
+
+
+    # grid = init_grid()
+    # agent = MCTSAgent()
+    # while not game_over(grid):
+    #     action = agent.choose_action(grid)
+    #     new_grid = action(grid)
+    #     if not np.array_equal(grid, new_grid):
+    #         grid = new_grid
+    #         add_new_tile(grid)
+        
+    # print("Max Tile Achieved by MCTS:", np.max(grid))
 
 
 
