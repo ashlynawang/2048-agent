@@ -1,7 +1,7 @@
 import random_play as rp 
 import numpy as np
 
-
+##### NOT USED
 # Evaluation function
 def evaluate(grid):
     """Heuristic evaluation of the grid."""

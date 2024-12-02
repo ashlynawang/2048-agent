@@ -1,4 +1,4 @@
-NOT USED, DID NOT SEEM TO IMPROVE PERFORMANCE BY MUCH
+# NOT USED, DID NOT SEEM TO IMPROVE PERFORMANCE BY MUCH
 
 def simulate_parallel(states):
     with multiprocessing.Pool() as pool:

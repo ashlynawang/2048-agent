@@ -21,26 +21,27 @@ def merge_tiles(row):
 
     # Realign tiles to the left
     row = [tile for tile in row if tile != 0]
-    return row + [0] * (4 - len(row))
+    row += [0] * (4 - len(row))
+    return np.array(row)
 
 
 def move_left(grid):
-    return [merge_tiles(row) for row in grid]
+    return np.array([merge_tiles(row) for row in grid])
 
 
 def move_right(grid):
-    return [merge_tiles(row[::-1])[::-1] for row in grid]
+    return np.array([merge_tiles(row[::-1])[::-1] for row in grid])
 
 
 def move_up(grid):
     transposed = np.transpose(grid)
-    moved = [merge_tiles(row) for row in transposed]
+    moved = np.array([merge_tiles(row) for row in transposed])
     return np.transpose(moved)
 
 
 def move_down(grid):
     transposed = np.transpose(grid)
-    moved = [merge_tiles(row[::-1])[::-1] for row in transposed]
+    moved = np.array([merge_tiles(row[::-1])[::-1] for row in transposed])
     return np.transpose(moved)
 
 
