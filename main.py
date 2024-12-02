@@ -6,9 +6,9 @@ import expectimax
 
 
 if __name__ == "__main__":
-    max_tile_results, score_results = rp.run_simulations(rp.simulate_game)
-    print("Average Max Tile:", sum(max_tile_results) / len(max_tile_results))
-    print("Tile Distribution:", {tile: max_tile_results.count(tile) for tile in set(max_tile_results)})
+    # max_tile_results, score_results = rp.run_simulations(rp.simulate_game)
+    # print("Average Max Tile:", sum(max_tile_results) / len(max_tile_results))
+    # print("Tile Distribution:", {tile: max_tile_results.count(tile) for tile in set(max_tile_results)})
 
     # # max tile from playing out each permutation of moves LRUD
     # cycle_max_results, cycle_score_results = cp.evaluate_all_cycles()
