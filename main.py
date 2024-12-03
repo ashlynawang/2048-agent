@@ -39,12 +39,14 @@ if __name__ == "__main__":
     # print("Max Tile:", np.max(grid))
     # print("Score:", np.sum(grid))
 
-    num_games = 10
-    depth = 3
+    num_games = 20
+    depth = 4
     results = [expectimax.simulate_game_expectimax(depth) for _ in range(num_games)]
     max_tiles, scores = zip(*results)
     print(f"Average Max Tile: {np.mean(max_tiles)}")
     print(f"Average Score: {np.mean(scores)}")
+    print("Tile Distribution:", {tile: max_tiles.count(tile) for tile in set(max_tiles)})
+
    
 
 

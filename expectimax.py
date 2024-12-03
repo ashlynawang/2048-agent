@@ -35,20 +35,23 @@ import numpy as np
 # Constants for scoring
 SCORE_LOST_PENALTY = 200000.0
 SCORE_MONOTONICITY_POWER = 4.0
-SCORE_MONOTONICITY_WEIGHT = 55.0
-SCORE_SUM_POWER = 2.0
-SCORE_SUM_WEIGHT = 11.0
-SCORE_MERGES_WEIGHT = 500.0
-SCORE_EMPTY_WEIGHT = 300.0
+SCORE_MONOTONICITY_WEIGHT = 60.0 #65
+# SCORE_SUM_POWER = 2.0
+# SCORE_SUM_WEIGHT = 11.0
+SCORE_MERGES_WEIGHT = 300.0
+SCORE_EMPTY_WEIGHT = 250.0 # 300
+SCORE_EDGE_TILE = 3.0
 
 # Tile values (including 0 for empty tiles)
-TILE_VALUES = [0] + [2**i for i in range(1, 13)]  # [0, 2, 4, 8, ..., 4096]
+TILE_VALUES = [0] + [2**i for i in range(1, 17)]  # [0, 2, 4, 8, ..., 4096]
 
 def calculate_heuristic_score(row):
+##### TO DO: add in heuristic for max values being at row[0] or row[3], factor by maybe 250?
+
     """Calculate heuristic score for a row."""
     empty = row.count(0)
     merges = 0
-    sum_score = sum(tile**SCORE_SUM_POWER for tile in row if tile != 0)
+    # sum_score = sum(tile**SCORE_SUM_POWER for tile in row if tile != 0)
 
     # Count merges
     i = 0
@@ -68,8 +71,12 @@ def calculate_heuristic_score(row):
         for i in range(len(row) - 1) if row[i] < row[i + 1]
     )
 
+    # Large values in edges
+    max_edge = max(row[0], row[3])
+
     heuristic_score = (
         SCORE_LOST_PENALTY
+        + max_edge ** SCORE_EDGE_TILE
         + SCORE_EMPTY_WEIGHT * empty
         + SCORE_MERGES_WEIGHT * merges
         - SCORE_MONOTONICITY_WEIGHT * min(monotonicity_left, monotonicity_right)
