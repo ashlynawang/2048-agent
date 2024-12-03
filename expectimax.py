@@ -1,36 +1,6 @@
 import random_play as rp
 import numpy as np
-
-# def evaluate(grid):
-#     """Heuristic to score the grid: prioritize empty tiles and high tile values."""
-#     max_tile = np.max(grid)
-#     empty_cells = np.sum(grid == 0)
-#     monotonicity_score = monotonicity(grid)
-#     smoothness_score = smoothness(grid)
-#     return max_tile + 20 * empty_cells + 0.2 * monotonicity_score - 0.4 * smoothness_score
-
-# def monotonicity(grid):
-#     """Measure monotonicity of the grid (smooth progression of numbers) for rows and columns."""
-#     monotonicity = 0   
-#     for vector in np.vstack([grid, grid.T]): 
-#         for i in range(len(vector) - 1):
-#             if vector[i] <= vector[i + 1]:  
-#                 monotonicity += 1
-#             elif vector[i] >= vector[i + 1]:
-#                 monotonicity += 1 
-#     return monotonicity
-
-# def smoothness(grid):
-#     """Measure smoothness (low adjacent differences in the grid)."""
-#     smoothness = 0
-#     for row in grid:
-#         smoothness += sum(abs(row[i] - row[i + 1]) for i in range(len(row) - 1) if row[i] and row[i + 1])
-#     for col in grid.T:
-#         smoothness += sum(abs(col[i] - col[i + 1]) for i in range(len(col) - 1) if col[i] and col[i + 1])
-#     return smoothness
-
 import itertools
-import numpy as np
 
 # Constants for scoring
 SCORE_LOST_PENALTY = 200000.0
@@ -45,9 +15,7 @@ SCORE_EDGE_TILE = 3.0
 # Tile values (including 0 for empty tiles)
 TILE_VALUES = [0] + [2**i for i in range(1, 17)]  # [0, 2, 4, 8, ..., 4096]
 
-def calculate_heuristic_score(row):
-##### TO DO: add in heuristic for max values being at row[0] or row[3], factor by maybe 250?
-
+def calculate_heuristic_score(row):y
     """Calculate heuristic score for a row."""
     empty = row.count(0)
     merges = 0
