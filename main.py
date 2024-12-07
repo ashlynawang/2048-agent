@@ -3,6 +3,7 @@ import random_play as rp
 import cyclic_play as cp
 import minimax as mm
 import expectimax
+import time
 
 
 if __name__ == "__main__":
@@ -39,13 +40,41 @@ if __name__ == "__main__":
     # print("Max Tile:", np.max(grid))
     # print("Score:", np.sum(grid))
 
-    num_games = 20
-    depth = 4
-    results = [expectimax.simulate_game_expectimax(depth) for _ in range(num_games)]
-    max_tiles, scores = zip(*results)
-    print(f"Average Max Tile: {np.mean(max_tiles)}")
-    print(f"Average Score: {np.mean(scores)}")
-    print("Tile Distribution:", {tile: max_tiles.count(tile) for tile in set(max_tiles)})
+    # num_games = 20
+    # depth = 4
+    # results = [expectimax.simulate_game_expectimax(depth) for _ in range(num_games)]
+    # max_tiles, scores = zip(*results)
+    # print(f"Average Max Tile: {np.mean(max_tiles)}")
+    # print(f"Average Score: {np.mean(scores)}")
+    # print("Tile Distribution:", {tile: max_tiles.count(tile) for tile in set(max_tiles)})
+    
+    # num_simulations = 1  # Run 10 simulations
+    # depth = 5  # Search depth for expectimax
+    # start = time.time()
+    # avg_max_tile, avg_score = expectimax.simulate_multiple_games(num_simulations, depth)
+    # end = time.time()
+
+    # print(f"Average Maximum Tile: {avg_max_tile}")
+    # print(f"Average Score: {avg_score}")
+    # print(end-start)
+
+    num_games = 100  # Number of games to simulate
+    depth = 4  # Search depth for Expectimax
+
+    # Run simulations in parallel
+    start = time.time()
+    max_tiles, scores = expectimax.run_simulations_parallel(num_games, depth)
+    end = time.time()
+
+    # Calculate statistics
+    avg_max_tile = np.mean(max_tiles)
+    avg_score = np.mean(scores)
+
+    print(f"Simulated {num_games} games.")
+    print(f"Depth: {depth}")
+    print(f"Average Maximum Tile: {avg_max_tile}")
+    print(f"Tile Distribution: {np.unique(max_tiles, return_counts=True)}")
+    print(end-start)
 
    
 
