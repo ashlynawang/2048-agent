@@ -25,7 +25,7 @@ if __name__ == "__main__":
 
     # MCTS
     num_games = 5
-    mcts.test_MCTS(num_games)
+    mcts.test_mcts(num_games)
 
     # Rule-based baseline agent
     baseline_agent.test_baseline_agent(num_games)
