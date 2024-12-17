@@ -119,7 +119,7 @@ def evaluate(grid):
         score += heuristic_table.get(tuple(row), 0)
     for col in grid.T:
         score += heuristic_table.get(tuple(col), 0)
-    score = score + max(grid[0][0], grid[3][0], grid[0][3], grid[3][3]) ** 5
+    score = score + max(grid[0][0], grid[3][0], grid[0][3], grid[3][3]) ** 4
     return score
 
 MOVES = [rp.move_left, rp.move_right, rp.move_up, rp.move_down]
@@ -209,10 +209,11 @@ def test_expectimax(num_games, depth=3):
     # Aggregate results
     max_tile_results = [result[0] for result in results]
     score_results = [result[1] for result in results]
-
+    unique_tiles, counts = np.unique(max_tile_results, return_counts=True)
+    tile_distribution = {tile: count for tile, count in zip(unique_tiles, counts)}
     print(f"Simulated {num_games} games.")
     print(f"Average Game Score: {np.mean(score_results)}")
     print(f"Average Maximum Tile: {np.mean(max_tile_results)}")
-    print(f"Max Tile Distribution: {np.unique(max_tile_results, return_counts=True)}")
+    print(f"Max Tile Distribution: {tile_distribution}")
 
     return max_tile_results, score_results

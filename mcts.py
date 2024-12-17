@@ -76,15 +76,15 @@ def simulate_mcts(num_games):
         action = agent.choose_action(grid)
         new_grid, added_score = action(grid)
         score += added_score
-        score += max(grid[0][3], grid[3][0], grid[0][0], grid[3][3]) * 0.2
+        # score += max(grid[0][3], grid[3][0], grid[0][0], grid[3][3]) * 0.2››
         if not np.array_equal(grid, new_grid):
             grid = new_grid
             add_new_tile(grid)
     
     max_tile = np.max(grid)
-    # print(f"Game Over!")  
-    # print("Max Tile Achieved by MCTS:", max_tile)
-    # print("Score Achieved by MCTS:", score)
+    print(f"Game Over!")  
+    print("Max Tile Achieved by MCTS:", max_tile)
+    print("Score Achieved by MCTS:", score)
     return max_tile, score
     
 
@@ -93,8 +93,11 @@ def test_mcts(num_games):
         results = list(executor.map(simulate_mcts, range(num_games)))
 
     max_tiles, scores = zip(*results)  # Separate max tiles and scores
+    # max_tiles, scores = simulate_mcts(num_games)
+    unique_tiles, counts = np.unique(max_tiles, return_counts=True)
+    tile_distribution = {tile: count for tile, count in zip(unique_tiles, counts)}
     print("Parallel Simulation Complete!")
-    print(f"Max Tile Distribution: {np.unique(max_tiles, return_counts=True)}")
+    print(f"Max Tile Distribution: {tile_distribution}")
     print(f"Average Max Tile: {np.mean(max_tiles)}")
     print(f"Average Score: {np.mean(scores)}")
     return max_tiles, scores
